@@ -12,6 +12,33 @@ use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
+
+    public function create(Request $request) {
+
+        $validate = Validate::check($request, [
+            'email' => 'required|unique:users|max:30|min:5|email',
+            'name' => 'required|min:3|max:30',
+            'password' => 'required|min:5',
+            'password_again' => 'required|same:password',
+            'check' => 'required'
+        ]);
+
+        if ($validate->fails()) {
+            return redirect('/reg')->withErrors($validate)->withInput();;
+        } else {
+            $user = new User($request->all());
+            $user->password = Hash::make($request->password);
+            $user->date = date('d/m/Y');
+            $user->remember_token = str_random(10);
+            $user->save();
+
+            Session::flash('success', true);
+
+            return redirect()->route('reg');
+        }
+
+    }
+
     public function in(Request $request) {
 
         $validate = Validate::check($request, [

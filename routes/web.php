@@ -18,7 +18,7 @@ Route::group(['middleware' => 'guest'], function() {
     Route::get('/reg', 'HomeController@reg')->name('reg');
     Route::get('/login', 'HomeController@login')->name('login');
 
-    Route::post('/create', 'CreateController@create');
+    Route::post('/create', 'UserController@create');
     Route::post('/in', 'UserController@in');
 
 
